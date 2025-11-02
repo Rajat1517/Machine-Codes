@@ -5,6 +5,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [hasMore,setHasMore]= useState(true);
   const [start,setStart]= useState(0)
+  
   const fetchData = async () => {
     try {
       if(loading || !hasMore) return;
