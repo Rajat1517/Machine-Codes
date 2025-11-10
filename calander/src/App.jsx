@@ -15,6 +15,7 @@ const months = [
   "November",
   "December",
 ];
+
 const week = ["S", "M", "T", "W", "T", "F", "S"];
 
 const today = new Date();

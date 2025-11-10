@@ -5,7 +5,7 @@ import ReverseAndMark from "./components/ReverseAndMark";
 function App() {
   return (
     <>
-      <ReverseAndMark />
+      {/* <ReverseAndMark /> */}
       <br/>
       <br/>
       <Incremental />
