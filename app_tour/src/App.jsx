@@ -1,6 +1,7 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom"
 import HomePage from "./pages/HomePage"
-import Tour from "./components/Tour"
+import Tour, { TourRoute } from "./components/Tour"
+import SecondPage from "./pages/SecondPage"
 
 const tour = [
   {
@@ -74,13 +75,16 @@ const tour = [
 function App() {
 
   return (
-    <div className="min-h-[100vh] min-w-[100vw] bg-slate-300">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Tour steps={tour}  ><HomePage /></Tour>} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Tour steps={tour} id={0}>
+      <div className="min-h-[100vh] min-w-[100vw] bg-slate-300">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/second" element={<TourRoute><SecondPage /></TourRoute>} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </Tour>
   )
 }
 
@@ -88,7 +92,7 @@ export default App
 
 /**
  * 
- * doneTour persistence
+ * 
  * If you ever want to evolve it further, next natural steps could be:
 
 🧭 Add a global overlay or spotlight around the focused element
