@@ -79,7 +79,7 @@ function App() {
       <div className="min-h-[100vh] min-w-[100vw] bg-slate-300">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<TourRoute><HomePage /></TourRoute>} />
             <Route path="/second" element={<TourRoute><SecondPage /></TourRoute>} />
           </Routes>
         </BrowserRouter>
@@ -97,10 +97,10 @@ export default App
 
 🧭 Add a global overlay or spotlight around the focused element
 
-🔄 Support multi-page continuation (persisting step across routes)
+🔄 Support multi-page continuation (persisting step across routes) done
 
-🎨 Animate popups or transitions
+🎨 Animate popups or transitions done
 
-🧩 Add a “resume tour” mode if the user closes and reopens it later
+🧩 Add a “resume tour” mode if the user closes and reopens it later done
 
  */

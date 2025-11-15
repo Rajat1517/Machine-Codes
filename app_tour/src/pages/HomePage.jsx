@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Card from "../components/Card"
-import { TourPopup } from "../components/Tour";
+import { Highlighter, TourPopup } from "../components/Tour";
 import { useTourNavigate } from "../hooks/useTourNavigate";
 
 
@@ -70,17 +70,17 @@ export default function HomePage() {
     return (
         <div className="w-full h-full">
 
-            <h2><button onClick={handleRoute}>Home</button> <TourPopup nextHandler={handleRoute} passedStep={0} /></h2>
-            <h2><button>About </button> <TourPopup passedStep={2} backHandler={handleBack} /></h2>
-            <h2><button>Details</button><TourPopup passedStep={3} /></h2>
-            <h2><button>Brother</button><TourPopup passedStep={4} /></h2>
-            <h2><button>Brother</button><TourPopup passedStep={5} /></h2>
-            <h2><button>Brother</button><TourPopup passedStep={6} /></h2>
-            <h2><button>Brother</button><TourPopup passedStep={7} /></h2>
-            <h2><button>Brother</button><TourPopup passedStep={8} /></h2>
-            <h2><button>Brother</button><TourPopup passedStep={9} /></h2>
-            <h2><button>Brother</button><TourPopup passedStep={10} /></h2>
-            <h2><button>Brother</button><TourPopup passedStep={11} /></h2>
+            <Highlighter passedStep={0}><h2><button onClick={handleRoute}>Home</button> <TourPopup nextHandler={handleRoute} passedStep={0} /></h2></Highlighter>
+            <Highlighter passedStep={2}><h2><button>About </button> <TourPopup passedStep={2} backHandler={handleBack} /></h2></Highlighter>
+            <Highlighter passedStep={3}><h2><button>Details</button><TourPopup passedStep={3} /></h2></Highlighter>
+            <Highlighter passedStep={4}><h2><button>Brother</button><TourPopup passedStep={4} /></h2></Highlighter>
+            <Highlighter passedStep={5}><h2><button>Brother</button><TourPopup passedStep={5} /></h2></Highlighter>
+            <Highlighter passedStep={6}><h2><button>Brother</button><TourPopup passedStep={6} /></h2></Highlighter>
+            <Highlighter passedStep={7}><h2><button>Brother</button><TourPopup passedStep={7} /></h2></Highlighter>
+            <Highlighter passedStep={8}><h2><button>Brother</button><TourPopup passedStep={8} /></h2></Highlighter>
+            <Highlighter passedStep={9}><h2><button>Brother</button><TourPopup passedStep={9} /></h2></Highlighter>
+            <Highlighter passedStep={10}><h2><button>Brother</button><TourPopup passedStep={10} /></h2></Highlighter>
+            <Highlighter passedStep={11}><h2><button>Brother</button><TourPopup passedStep={11} /></h2></Highlighter>
 
         </div>
     )

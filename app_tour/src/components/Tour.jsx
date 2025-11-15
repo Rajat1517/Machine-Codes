@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { useTourNavigate } from "../hooks/useTourNavigate";
+import "../App.css";
 
 export const TourContext = createContext();
 
@@ -40,7 +41,7 @@ export function TourPopup({ passedStep, children, left, top, nextHandler, finish
 
     if (!children)
         return (
-            <article className={`bg-white rounded min-w-fit-content min-h-fit-content border-box p-4 absolute z-10 top-[${top}px] left-[${left}px]`}>
+            <article className={`bg-white popups rounded min-w-fit-content min-h-fit-content border-box p-4 absolute opacity-100 z-10 top-[${top}px] left-[${left}px]`}>
                 <h3>{steps[step].title ?? "Title"}</h3>
                 <p>{steps[step].content ?? "Content"}</p>
                 <div className="flex w-full justify-between">
@@ -50,7 +51,7 @@ export function TourPopup({ passedStep, children, left, top, nextHandler, finish
             </article>
         )
 
-    return <div className={`absolute top-[${steps[step].top}px] left-[${steps[step].left}px]`}>{children}</div>
+    return <div className={`absolute popups opacity-100 top-[${steps[step].top}px] left-[${steps[step].left}px]`}>{children}</div>
 }
 
 
@@ -78,7 +79,6 @@ export function TourButtonNext({ onClick: handler, children }) {
         </button>
 
     )
-
 }
 
 
@@ -147,8 +147,10 @@ export function TourRoute({ children }) {
     const { navigateTour } = useTourNavigate();
     useEffect(() => {
         const { doneTour, route } = JSON.parse(localStorage.getItem(`tour-${id}`));
+        console.log(route);
         if (!route) return;
         if (!doneTour && route !== window.location.pathname) {
+            console.log("wrong route")
             setIsWrongOrder(true);
         }
     }, [id])
@@ -163,9 +165,10 @@ export function TourRoute({ children }) {
                         <p>Do you want to pick up where you left??</p>
                         <div className="flex w-full justify-end gap-4">
                             <button onClick={() => {
+                                setIsWrongOrder(false);
                                 navigateTour((JSON.parse(localStorage.getItem(`tour-${id}`))).route)
                             }} className="bg-slate-200 p-2">resume</button>
-                            <button onClick={()=>{
+                            <button onClick={() => {
                                 setIsWrongOrder(false);
                             }} className="bg-slate-200 p-2">exit</button>
                         </div>
@@ -176,4 +179,27 @@ export function TourRoute({ children }) {
     )
 }
 
+
+export function Highlighter({ children, passedStep }) {
+
+    const { step } = useContext(TourContext);
+
+    const elemRef= useRef(null);
+
+    if (step === passedStep)
+        return (
+            <div className="z-200  w-[100vw] h-[100vh] absolute top-0 left-0 bg-black opacity-60 border-box">
+                <div className={`border-white border-2 z-400 relative top-${elemRef.current?.getBoundingClientReact?.top} left-${elemRef.current?.getBoundingClientReact?.left}   w-fit-content h-fit-content opacity-100`}>
+                    {children}
+                </div>
+            </div>
+        )
+
+
+    return (
+        <div ref={elemRef}>
+            {children}
+        </div>
+    )
+}
 

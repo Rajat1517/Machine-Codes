@@ -1,0 +1,20 @@
+
+
+
+@keyframes popup {
+    from{
+        opacity: 0;
+        transform: scale(0);
+    }
+    to{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+
+
+.popups{
+    animation: popup 0.5s ease-in 1;
+}
