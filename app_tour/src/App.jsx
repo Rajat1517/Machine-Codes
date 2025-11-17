@@ -91,8 +91,6 @@ function App() {
 export default App
 
 /**
- * 
- * 
  * If you ever want to evolve it further, next natural steps could be:
 
 🧭 Add a global overlay or spotlight around the focused element
@@ -102,5 +100,4 @@ export default App
 🎨 Animate popups or transitions done
 
 🧩 Add a “resume tour” mode if the user closes and reopens it later done
-
  */

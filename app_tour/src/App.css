@@ -12,6 +12,19 @@
     }
 }
 
+.overlay{
+    animation: blurIn 0.2s ease-in 1;
+}
+
+
+@keyframes blurIn{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
 
 
 

@@ -41,7 +41,7 @@ export function TourPopup({ passedStep, children, left, top, nextHandler, finish
 
     if (!children)
         return (
-            <article className={`bg-white popups rounded min-w-fit-content min-h-fit-content border-box p-4 absolute opacity-100 z-10 top-[${top}px] left-[${left}px]`}>
+            <article className={`bg-white popups rounded w-fit-content h-fit-content min-w-48 border-box p-4 absolute opacity-100 z-60 top-[${top}px] left-[${left}px]`}>
                 <h3>{steps[step].title ?? "Title"}</h3>
                 <p>{steps[step].content ?? "Content"}</p>
                 <div className="flex w-full justify-between">
@@ -146,6 +146,7 @@ export function TourRoute({ children }) {
     const [isWrongOrder, setIsWrongOrder] = useState(false);
     const { navigateTour } = useTourNavigate();
     useEffect(() => {
+        if (JSON.parse(!localStorage.getItem(`tour-${id}`))) return;
         const { doneTour, route } = JSON.parse(localStorage.getItem(`tour-${id}`));
         console.log(route);
         if (!route) return;
@@ -182,22 +183,59 @@ export function TourRoute({ children }) {
 
 export function Highlighter({ children, passedStep }) {
 
-    const { step } = useContext(TourContext);
+    const { step, doneTour } = useContext(TourContext);
 
-    const elemRef= useRef(null);
+    const elemRef = useRef(null);
 
-    if (step === passedStep)
+
+    const [rect, setRect] = useState(null);
+
+    useEffect(() => {
+        const compute = () => {
+            if (!elemRef.current) return setRect(null);
+            const r = elemRef.current.getBoundingClientRect();
+            setRect({
+                top: Math.round(r.top + window.scrollY),
+                left: Math.round(r.left + window.scrollX),
+                width: Math.round(r.width),
+                height: Math.round(r.height),
+                right: Math.round(r.right + window.scrollX),
+                bottom: Math.round(r.bottom + window.scrollY)
+            });
+        }
+
+        if (step === passedStep) {
+            compute();
+            window.addEventListener('resize', compute);
+            window.addEventListener('scroll', compute, true);
+        }
+
+        return () => {
+            window.removeEventListener('resize', compute);
+            window.removeEventListener('scroll', compute, true);
+        }
+    }, [step, passedStep]);
+
+    if (step === passedStep && rect && !doneTour) {
         return (
-            <div className="z-200  w-[100vw] h-[100vh] absolute top-0 left-0 bg-black opacity-60 border-box">
-                <div className={`border-white border-2 z-400 relative top-${elemRef.current?.getBoundingClientReact?.top} left-${elemRef.current?.getBoundingClientReact?.left}   w-fit-content h-fit-content opacity-100`}>
+            <div style={{ position: 'relative', zIndex: 70, width: "fit-content", height: "fit-content" }} ref={elemRef}>
+                <div style={{ position: 'relative', zIndex: 71 }}>
                     {children}
                 </div>
+
+                <div aria-hidden style={{ position: 'fixed', inset: 0, zIndex: 60, pointerEvents: 'auto' }}>
+                    <div className="overlay" style={{ position: 'absolute', left: 0, top: 0, right: 0, height: rect.top, background: 'rgba(0,0,0,0.6)' }} />
+                    <div className="overlay" style={{ position: 'absolute', left: 0, top: rect.top, width: rect.left, height: rect.height, background: 'rgba(0,0,0,0.6)' }} />
+                    <div className="overlay" style={{ position: 'absolute', left: rect.left + rect.width, top: rect.top, right: 0, height: rect.height, background: 'rgba(0,0,0,0.6)' }} />
+                    <div className="overlay" style={{ position: 'absolute', left: 0, top: rect.top + rect.height, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)' }} />
+                </div>
+                <div style={{ position: 'fixed', top: rect.top, left: rect.left, width: rect.width, height: rect.height, boxShadow: '0 0 0 3px rgba(255,255,255,0.9)', borderRadius: 6, pointerEvents: 'none', zIndex: 72 }} />
             </div>
         )
-
+    }
 
     return (
-        <div ref={elemRef}>
+        <div style={{ width: "fit-content", height: "fit-content" }} ref={elemRef}>
             {children}
         </div>
     )
