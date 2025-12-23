@@ -22,10 +22,15 @@ const today = new Date();
 
 const lastDates = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
+const years = Array.from({ length: 2030 - 1960 + 1 }, (_, index) => 1960 + index);
+
+
 function App() {
   const [mat, setMat] = useState([]);
   const [month, setMonth] = useState(0);
   const [year, setYear] = useState(0);
+  const [selectMonth, setSelectMonth] = useState(false);
+  const [selectYear, setSelectYear] = useState(false);
 
   useEffect(() => {
     const now = new Date();
@@ -50,7 +55,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (year && month >= 0) populateMat(year, month);
+    populateMat(year, month);
   }, [month, year, populateMat]);
 
   const handlePrev = () => {
@@ -70,11 +75,33 @@ function App() {
   return (
     <div>
       <p>
-        {months[month]} {year}
+        <button onClick={handlePrev}>&#9668;</button>
+        <span onClick={() => {
+          setSelectMonth(true)
+        }}>{selectMonth ? <select onChange={(e) => { setMonth(Number(e.target.value)); setSelectMonth(false) }}>
+          <option value={month}>{months[month]}</option>
+          {months.map((mon, index) => {
+            if (index === month) return null;
+            return (
+              <option key={mon} value={index}>{mon}</option>
+            )
+          })}
+        </select> : months[month]}</span> <span onClick={() => {
+          setSelectYear(true)
+        }}>{selectYear ? <select onChange={(e) => { setYear(Number(e.target.value)); setSelectYear(false) }}>
+          <option value={year}>{year}</option>
+          {years.map((yr) => {
+            if (yr === year) return null;
+            return (
+              <option key={yr} value={yr}>{yr}</option>
+            )
+          })}
+        </select> : year}</span>
+        <button onClick={handleNext}>&#9658;</button>
       </p>
       <div className="calendar-grid">
         {week.map((d, idx) => (
-          <div key={idx + d} className="calendar-cell">
+          <div key={idx + d}>
             {d || ""}
           </div>
         ))}
@@ -82,21 +109,19 @@ function App() {
           const now = new Date(year, month, d);
           today.setHours(0, 0, 0, 0);
           now.setHours(0, 0, 0, 0);
-          console.log(today.getTime() === now.getTime());
           return (
             <div
               key={idx}
-              className={`calendar-cell ${
-                today.getTime() === now.getTime() ? "today" : ""
-              }`}
+              className={`calendar-cell ${today.getTime() === now.getTime() ? "today" : ""
+                } ${d ? "bordered" : ""}`}
             >
               {d || ""}
             </div>
           );
         })}
       </div>
-      <button onClick={handlePrev}>Prev</button>
-      <button onClick={handleNext}>Next</button>
+
+
     </div>
   );
 }
